@@ -1,0 +1,22 @@
+line="2002.04.02;  х123ор'"#Это пример строки, её можно заменить
+
+
+#Наш класс
+class Car_inf():
+    def __init__(self,line):
+        while '  ' in line:
+            line=line.replace('  ',' ',1)
+        self.list_of_line=line.split('; ')
+        for i in range(len(self.list_of_line)):
+            if (self.list_of_line[i][0]=="'" or self.list_of_line[i][0]=='"'):
+                self.list_of_line[i]=self.list_of_line[i][1:]
+            if (self.list_of_line[i][-1]=="'" or self.list_of_line[i][-1]=='"'):
+                self.list_of_line[i]=self.list_of_line[i][:-1]
+    def ret(self):
+        return self.list_of_line
+
+#Создание класса
+CI=Car_inf(line)
+
+#Выводим результаты работы
+print(CI.ret())

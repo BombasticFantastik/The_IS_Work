@@ -1,22 +1,25 @@
-line="2002.04.02;  х123ор'"#Это пример строки, её можно заменить
+line="2002.04.02;  х123ор'"
 
-
-#Наш класс
 class Car_inf():
     def __init__(self,line):
+
+        self.line=line
+
+    def with_no_space(self,line):
         while '  ' in line:
             line=line.replace('  ',' ',1)
-        self.list_of_line=line.split('; ')
+        return line
+    def with_no_str(self,list_of_line):
         for i in range(len(self.list_of_line)):
-            if (self.list_of_line[i][0]=="'" or self.list_of_line[i][0]=='"'):
-                self.list_of_line[i]=self.list_of_line[i][1:]
-            if (self.list_of_line[i][-1]=="'" or self.list_of_line[i][-1]=='"'):
-                self.list_of_line[i]=self.list_of_line[i][:-1]
+            if (list_of_line[i][0]=="'" or list_of_line[i][0]=='"'):
+                list_of_line[i]=list_of_line[i][1:]
+            if (list_of_line[i][-1]=="'" or list_of_line[i][-1]=='"'):
+                list_of_line[i]=list_of_line[i][:-1]
+        return list_of_line
     def ret(self):
+        line=self.with_no_space(self.line)
+        self.list_of_line=line.split('; ')
+        self.list_of_line=self.with_no_str(self.list_of_line)
         return self.list_of_line
-
-#Создание класса
 CI=Car_inf(line)
-
-#Выводим результаты работы
-print(CI.re
+print(CI.ret())

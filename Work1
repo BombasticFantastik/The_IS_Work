@@ -2,9 +2,7 @@ line="2002.04.02;  х123ор'"
 
 class Car_inf():
     def __init__(self,line):
-
         self.line=line
-
     def with_no_space(self,line):
         while '  ' in line:
             line=line.replace('  ',' ',1)
@@ -16,10 +14,23 @@ class Car_inf():
             if (list_of_line[i][-1]=="'" or list_of_line[i][-1]=='"'):
                 list_of_line[i]=list_of_line[i][:-1]
         return list_of_line
+    def file_to_string(self,list_of_line):
+        for i in range(len(list_of_line)):
+            if ".txt" in list_of_line[i]:
+                list_of_line[i]=open(list_of_line[i],encoding="utf-8").read()
+                list_of_line[i]=self.with_no_space(self.list_of_line[i])
+                list_of_line[i]=list_of_line[i].split('; ')
+                for j in list_of_line[i]:
+                    j=j.replace('\n','')
+                    list_of_line.append(j)
+                    
+                list_of_line.remove(list_of_line[i])
+        return list_of_line
     def ret(self):
         line=self.with_no_space(self.line)
         self.list_of_line=line.split('; ')
+        self.list_of_line=self.file_to_string(self.list_of_line)
         self.list_of_line=self.with_no_str(self.list_of_line)
         return self.list_of_line
-CI=Car_inf(line)
+CI=Car_inf("Work2_txt_test.txt")
 print(CI.ret())

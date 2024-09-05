@@ -1,36 +1,45 @@
-line="2002.04.02;  х123ор'"
+line="2002.04.02;  х123ор'; Седан ; 'голубой'"
 
-class Car_inf():
+class Car():
     def __init__(self,line):
-        self.line=line
-    def with_no_space(self,line):
+        line=with_no_space(line)
+        list_of_line=line.split('; ')
+        list_of_line=file_to_string(list_of_line)
+        list_of_line=with_no_str(list_of_line)
+        self.date=list_of_line[0]
+        self.num=list_of_line[1]
+        self.cls=list_of_line[2]
+        self.color=list_of_line[3]
+    def out_data(self):
+        return self.date,self.num,self.cls,self.color
+def with_no_space(line):
         while '  ' in line:
             line=line.replace('  ',' ',1)
         return line
-    def with_no_str(self,list_of_line):
-        for i in range(len(self.list_of_line)):
+def with_no_str(list_of_line):
+        for i in range(len(list_of_line)):
             if (list_of_line[i][0]=="'" or list_of_line[i][0]=='"'):
                 list_of_line[i]=list_of_line[i][1:]
             if (list_of_line[i][-1]=="'" or list_of_line[i][-1]=='"'):
                 list_of_line[i]=list_of_line[i][:-1]
         return list_of_line
-    def file_to_string(self,list_of_line):
+def file_to_string(list_of_line):
         for i in range(len(list_of_line)):
             if ".txt" in list_of_line[i]:
                 list_of_line[i]=open(list_of_line[i],encoding="utf-8").read()
-                list_of_line[i]=self.with_no_space(self.list_of_line[i])
+                list_of_line[i]=with_no_space(list_of_line[i])
                 list_of_line[i]=list_of_line[i].split('; ')
                 for j in list_of_line[i]:
                     j=j.replace('\n','')
                     list_of_line.append(j)
-                    
                 list_of_line.remove(list_of_line[i])
         return list_of_line
-    def ret(self):
-        line=self.with_no_space(self.line)
-        self.list_of_line=line.split('; ')
-        self.list_of_line=self.file_to_string(self.list_of_line)
-        self.list_of_line=self.with_no_str(self.list_of_line)
-        return self.list_of_line
-CI=Car_inf("Work2_txt_test.txt")
-print(CI.ret())
+def ret(line):
+    line=with_no_space(line)
+    list_of_line=line.split('; ')
+    list_of_line=file_to_string(list_of_line)
+    list_of_line=with_no_str(list_of_line)
+    return list_of_line
+    
+BMV0=Car("'2002.04.02'; 'х156ок'; Work2_txt_test.txt") 
+print(BMV0.out_data())

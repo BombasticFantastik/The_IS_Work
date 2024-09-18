@@ -1,0 +1,69 @@
+import abc
+class ITransport(abc.ABC):
+    
+    @abc.abstractmethod
+    def Show_data(self):
+        pass
+
+class Car(ITransport):
+    def __init__(self,date,num):
+        self.date=date
+        self.num=num
+    def Show_data(self):
+        return self.date,self.num
+        
+class Train(ITransport):
+    def __init__(self,date,num,lenght):
+        self.date=date
+        self.num=num
+        self.lenght=lenght
+    def Show_data(self):
+        return self.date,self.num,self.lenght
+        
+class Bike(ITransport):
+    def __init__(self,date,num,max_speed):
+        self.date=date
+        self.num=num
+        self.max_speed=max_speed
+    def Show_data(self):
+        return self.date,self.num,self.max_speed
+
+
+def Remove_quotes(list_of_line):
+        for i in range(len(list_of_line)):
+            if (list_of_line[i][0]=="'" or list_of_line[i][0]=='"'):
+                list_of_line[i]=list_of_line[i][1:]
+            if (list_of_line[i][-1]=="'" or list_of_line[i][-1]=='"'):
+                list_of_line[i]=list_of_line[i][:-1]
+        return list_of_line
+def Open_txt(line):
+    if '.txt' in line:
+        line=open(line,encoding="utf-8").read()
+        line=line.replace('\n','')
+        return line
+    else:
+        return line
+def Remove_spaces(line):
+    while '  ' in line:
+        line=line.replace('  ',' ',1)
+    return line
+def Collect_all(line):
+    line=Remove_spaces(line)
+    line=Open_txt(line)
+    list_of_line=line.split('; ')
+    list_of_line=Remove_quotes(list_of_line)
+    return list_of_line
+
+
+
+Car_str=Collect_all("Work2_txt_test.txt")
+BMV=Car(Car_str[0],Car_str[1])
+print(BMV.Show_data())
+
+Byce_str=Collect_all("2013.01.04; 'АВ231В'; 120")
+Moped=Bike(Byce_str[0],Byce_str[1],Byce_str[2])
+print(Moped.Show_data())
+
+Train_str=Collect_all("2023.04.04;   'АВ231В'; 15")
+Smoke_Train=Train(Train_str[0],Train_str[1],Train_str[2])
+print(Smoke_Train.Show_data())

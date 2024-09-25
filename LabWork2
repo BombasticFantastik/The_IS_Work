@@ -30,23 +30,23 @@ class Bike(ITransport):
 
 
 def Remove_quotes(list_of_line):
-        for i in range(len(list_of_line)):
-            if (list_of_line[i][0]=="'" or list_of_line[i][0]=='"'):
-                list_of_line[i]=list_of_line[i][1:]
-            if (list_of_line[i][-1]=="'" or list_of_line[i][-1]=='"'):
-                list_of_line[i]=list_of_line[i][:-1]
-        return list_of_line
-def Split_by_separator(line):#Изменить название
-    if '.txt' in line:
-        line=open(line,encoding="utf-8").read().split(';')
+    list_of_line=[j.replace('"','').replace("'",'') for j in list_of_line]
+    return list_of_line
+def Split_by_separator(line):#try открыть
+    line=line.split(';')
+    return line
+def Try_open_txt(line):
+    try:
+        line=open(line,encoding="utf-8").read()
+    except:
+        print('///Подаётся не путь к файлу///')
+    finally:
         return line
-    else:
-        line=line.split(';')
-        return line
-def Fabric(path,cls):
-    line=Split_by_separator(path)
+def Fabric(line,class_name):
+    line=Try_open_txt(line)
+    line=Split_by_separator(line)
     list_for_return=[]
-    match cls:
+    match class_name:
         case 'Car':
             for transport in line:
                 list_transport=Line_to_normalize_list(transport)
@@ -64,9 +64,8 @@ def Fabric(path,cls):
                 list_for_return.append(transport)
     return list_for_return
 
-def Line_to_normalize_list(line):#изменить название
-    line=line.strip()
-    list_of_line=line.split()
+def Line_to_normalize_list(line):
+    list_of_line=line.strip().split()
     list_of_line=Remove_quotes(list_of_line)
     return list_of_line
 

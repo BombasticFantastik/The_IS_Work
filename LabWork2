@@ -28,11 +28,10 @@ class Bike(ITransport):
     def Show_data(self):
         return self.date,self.num,self.max_speed
 
-
 def Remove_quotes(list_of_line):
     list_of_line=[j.replace('"','').replace("'",'') for j in list_of_line]
     return list_of_line
-def Split_by_separator(line):#try открыть
+def Split_by_separator(line):
     line=line.split(';')
     return line
 def Try_open_txt(line):
@@ -42,39 +41,39 @@ def Try_open_txt(line):
         print('///Подаётся не путь к файлу///')
     finally:
         return line
-def Fabric(line,class_name):
-    line=Try_open_txt(line)
-    line=Split_by_separator(line)
+def String_to_list_of_classes(line):
     list_for_return=[]
+    line=Try_open_txt(line)
+    lines=Split_by_separator(line)
+    for transport in lines:
+        transport=Line_to_normalize_list(transport)
+        transport=Fabric(transport)
+        list_for_return.append(transport)
+    return list_for_return
+    
+def Fabric(list_transport):
+    class_name=list_transport[0]
     match class_name:
         case 'Car':
-            for transport in line:
-                list_transport=Line_to_normalize_list(transport)
-                transport=Car(list_transport[0],list_transport[1]) 
-                list_for_return.append(transport)
+            transport=Car(list_transport[1],list_transport[2]) 
+            return transport
         case 'Train':
-            for transport in line:
-                list_transport=Line_to_normalize_list(transport)
-                transport=Train(list_transport[0],list_transport[1],list_transport[2]) 
-                list_for_return.append(transport)
+            transport=Train(list_transport[1],list_transport[2],list_transport[3]) 
+            return transport
         case 'Bike':
-            for transport in line:
-                list_transport=Line_to_normalize_list(transport)
-                transport=Bike(list_transport[0],list_transport[1],list_transport[2]) 
-                list_for_return.append(transport)
-    return list_for_return
-
+            transport=Bike(list_transport[1],list_transport[2],list_transport[3])
+            return transport
 def Line_to_normalize_list(line):
     list_of_line=line.strip().split()
     list_of_line=Remove_quotes(list_of_line)
     return list_of_line
 
 
-cars=Fabric("Work2_txt_test.txt",'Car')
+cars=String_to_list_of_classes("Work2_txt_test.txt")
 print(f'Результат для файла:{cars[0].Show_data()},{cars[1].Show_data()},{cars[2].Show_data()}')
 
-trains=Fabric('2022.05.05  "АК414БУ 13"; 2000.01.01 "ВВ111УУ" 23','Train')
+trains=String_to_list_of_classes('Train 2022.05.05  "АК414БУ 13";Train 2000.01.01 "ВВ111УУ" 23')
 print(f'Результат для строки:{trains[0].Show_data()},{trains[1].Show_data()}')
 
-bikes=Fabric('2022.05.05   "АК414БУ" 130; 2010.11.11 "УУ121ВФ" 100','Train')
+bikes=String_to_list_of_classes('Bike 2022.05.05   "АК414БУ" 130;Bike 2010.11.11 "УУ121ВФ" 100')
 print(f'Результат для строки:{bikes[0].Show_data()},{bikes[1].Show_data()}')
